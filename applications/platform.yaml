@@ -1,0 +1,26 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: platform
+  namespace: argocd
+spec:
+  generators:
+    - git:
+        repoURL: 'https://github.com/akaroth/eks-main-coreservices'
+        revision: HEAD
+        directories:
+          - path: '*'
+  template:
+    metadata:
+      name: '{{path.basename}}'
+    spec:
+      project: default
+      source:
+        repoURL: 'https://github.com/akaroth/eks-main-coreservices'
+        targetRevision: HEAD
+        path: '{{path}}'
+        kustomize:
+          namePrefix: '{{path.basename}}-'
+      destination:
+        server: 'https://kubernetes.default.svc'
+        namespace: '{{path.basename}}'
