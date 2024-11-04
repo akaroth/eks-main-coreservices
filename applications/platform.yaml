@@ -8,8 +8,6 @@ spec:
     - git:
         repoURL: 'https://github.com/akaroth/eks-main-coreservices'
         revision: HEAD
-        directories:
-          - path: '*'
   template:
     metadata:
       name: '{{path.basename}}'
