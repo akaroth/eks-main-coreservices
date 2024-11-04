@@ -6,19 +6,19 @@ metadata:
 spec:
   generators:
     - git:
-        repoURL: 'https://github.com/akaroth/eks-main-coreservices'
+        repoURL: 'https://github.com/akaroth/BasePlatform'
         revision: HEAD
+        directories:
+          - path: 'overlays/coreservice'
   template:
     metadata:
       name: '{{path.basename}}'
     spec:
       project: default
       source:
-        repoURL: 'https://github.com/akaroth/eks-main-coreservices'
+        repoURL: 'https://github.com/akaroth/BasePlatform'
         targetRevision: HEAD
         path: '{{path}}'
-        kustomize:
-          namePrefix: '{{path.basename}}-'
       destination:
         server: 'https://kubernetes.default.svc'
         namespace: '{{path.basename}}'
