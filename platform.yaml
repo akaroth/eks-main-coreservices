@@ -1,24 +1,18 @@
 apiVersion: argoproj.io/v1alpha1
-kind: ApplicationSet
+kind: Application
 metadata:
   name: platform
   namespace: argocd
 spec:
-  generators:
-    - git:
-        repoURL: 'https://github.com/akaroth/BasePlatform'
-        revision: HEAD
-        directories:
-          - path: 'overlays/coreservice'
-  template:
-    metadata:
-      name: '{{path.basename}}'
-    spec:
-      project: default
-      source:
-        repoURL: 'https://github.com/akaroth/BasePlatform'
-        targetRevision: HEAD
-        path: '{{path}}'
-      destination:
-        server: 'https://kubernetes.default.svc'
-        namespace: '{{path.basename}}'
+  project: default
+  source:
+    repoURL: 'https://github.com/akaroth/BasePlatform.git'
+    targetRevision: HEAD  # or a specific branch/tag
+    path: overlays/coreservice     # Ensure this points to the directory with kustomization.yaml
+  destination:
+    server: 'https://kubernetes.default.svc'  # Default for in-cluster Argo CD installation
+    namespace: default    # Set the namespace where you want to deploy the resources
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
